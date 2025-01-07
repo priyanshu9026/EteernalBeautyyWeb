@@ -1,3 +1,55 @@
-.img{
+.img {
     width: 100px;
+}
+
+.studio-container {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.img-container img {
+    width: 150px;
+    /* Adjust based on your design */
+    height: auto;
+    border-radius: 10px;
+    /* Rounded corners */
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    /* Add shadow for depth */
+    object-fit: cover;
+    transition: transform 0.3s ease;
+    /* Smooth hover effect */
+}
+
+.img-container img:hover {
+    transform: scale(1.05);
+    /* Slight zoom effect on hover */
+}
+
+.relative {
+    position: relative;
+}
+
+.translate-y-4 {
+    transform: translateY(16px);
+    /* Offset for vertical alignment */
+}
+
+.-translate-y-4 {
+    transform: translateY(-16px);
+    /* Offset for vertical alignment */
+}
+
+@media only screen and (max-width: 1200px) {
+    .studio-container {
+        display: flex;
+        flex-direction: column;
+        text-align: center;
+    }
+}
+@media only screen and (min-width: 1200px) {
+    .img-container {
+        display: flex;
+        flex-direction: row;
+    }
 }

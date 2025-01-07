@@ -18,11 +18,12 @@ const Header = () => {
         </p>
       </div>
       <div className="pt-5 d-flex flex-row justify-content-start">
-        <button className="m-2 btn btn-warning">GET GORGEOUS</button>
+        <button className="bg-red-950 m-2 btn btn-warning">GET GORGEOUS</button>
         <button className="m-2 btn btn-outline-primary">CONTACT NOW</button>
       </div>
       </div>
     </div>
+    
     </>
   );
 };
