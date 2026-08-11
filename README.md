@@ -1,70 +1,118 @@
-# Getting Started with Create React App
+# Eteernal Beautyy — Makeup Studio Website
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+Marketing website for **Eteernal Beautyy Makeup Studio**, a bridal and occasion
+makeup studio in Bangla Bazaar, Lucknow, run by makeup artist **Sanjoli
+Singh**.
 
-## Available Scripts
+The site's job is simple: show the work, explain what things cost, and make it
+easy for a bride-to-be to call or message and book a trial. Most visitors arrive
+on a phone, so mobile layout and the WhatsApp shortcut are treated as primary,
+not as an afterthought.
 
-In the project directory, you can run:
+## Tech stack
 
-### `npm start`
+| Concern    | Choice                                          |
+| ---------- | ----------------------------------------------- |
+| Framework  | React 18 with Create React App (`react-scripts` 5) |
+| Routing    | `react-router-dom` 7                            |
+| Styling    | Tailwind CSS 3.4 (via PostCSS) — the only styling system |
+| Motion     | `framer-motion`                                 |
+| Icons      | `react-icons` (Feather + Font Awesome sets)     |
+| Fonts      | Cormorant Garamond, Jost, Pinyon Script (Google Fonts) |
+| Testing    | Jest + React Testing Library                    |
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+There is **no backend**. The contact form validates in the browser, shows a
+confirmation, and hands the visitor a pre-filled WhatsApp message.
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+## Getting started
 
-### `npm test`
+Requires Node 18 or newer.
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+```bash
+npm install     # install dependencies
+npm start       # dev server on http://localhost:3000
+npm test        # run the smoke tests in watch mode
+npm run build   # production bundle into build/
+```
 
-### `npm run build`
+The production build is a static site — `build/` can be dropped onto any static
+host. If the host is not configured for single-page apps, add a rewrite so every
+path serves `index.html`, otherwise a hard refresh on `/services` will 404.
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+## Project structure
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+```
+public/
+  index.html          Document shell: SEO tags, Open Graph, Google Fonts
+  manifest.json       PWA metadata
+  assets/             All imagery, served from /assets/...
+src/
+  App.js              Router and route table
+  index.css           Tailwind layers plus base/component classes (.shell, .label, .btn …)
+  data/site.js        Business details and all page content
+  components/
+    layout/           Navbar, Footer, Layout, ScrollToTop, WhatsAppFab
+    ui/               Reveal, Eyebrow, GoldMarquee, PageIntro, Lightbox, ContactCta
+    home/             The home page sections, in scroll order
+  Pages/
+    Home/  About/  Services/  Gallery/  Contact/  NotFound/
+```
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+### Routes
 
-### `npm run eject`
+| Path        | Page      | Contents                                                     |
+| ----------- | --------- | ------------------------------------------------------------ |
+| `/`         | Home      | Hero, gold marquee, studio intro, service preview, signature bridal band, testimonials, gallery teaser, booking band |
+| `/about`    | About     | Artist story, stats, working principles, training timeline    |
+| `/services` | Services  | Full price list grouped into Bridal, Party & Occasion, Hair & Draping, Classes |
+| `/gallery`  | Gallery   | Filterable masonry gallery with a lightbox                    |
+| `/contact`  | Contact   | Validated enquiry form, studio details, Google Map            |
+| anything else | 404     | Links back to the five real routes                            |
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+## Where to update content
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+Almost all copy lives in **`src/data/site.js`** — edit there rather than inside
+components.
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+- **Phone, WhatsApp, email, address, hours** — the `studio` object. The phone
+  number appears in the navbar, footer, contact page and every WhatsApp link;
+  changing it in one place updates all of them.
+- **Service names, descriptions, prices, durations** — `serviceGroups` drives
+  `/services`; `signatureServices` drives the four home-page cards.
+- **Testimonials** — the `testimonials` array.
+- **Gallery photographs and their categories** — the `galleryImages` array. Add
+  the file to `public/assets/`, then add an entry with `src`, `alt`, `category`
+  (`Bridal`, `Party` or `Editorial`), `caption` and `orientation`.
+- **About page numbers and training history** — `stats` and `credentials`.
+- **Contact form service dropdown** — `serviceOptions`.
+- **Social links** — `socialLinks`. These currently point at `#`; replace the
+  `href` values with the real profiles.
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+Longer prose (the artist story, the working principles, the pull quote) sits
+inside the relevant page component.
 
-## Learn More
+### Design tokens
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+Colours, fonts, letter spacing and keyframes are defined in
+`tailwind.config.js`. Use the tokens (`ink`, `gold`, `blush`, `cream`,
+`font-display`, `tracking-label`) rather than hard-coded hex values so the
+palette stays consistent.
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+Shared class helpers live in `src/index.css`: `.shell` (page gutter),
+`.label` (small-caps eyebrow), `.copy` / `.copy-invert` (body text),
+`.btn` variants, `.rule` (gold hairline) and `.paper` (background texture).
 
-### Code Splitting
+### Images
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+Every image is local, in `public/assets/`, and referenced as `/assets/name.jpg`.
+Keep new photographs under roughly 250 KB and around 1400 px on the long edge —
+the existing files are sized that way and the pages are laid out for portrait
+(3:4) crops.
 
-### Analyzing the Bundle Size
+## Accessibility notes
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+The site is built to keep working for people who are not using a mouse or who
+have motion sensitivity: semantic landmarks throughout, alt text on every
+photograph, gold focus rings, labelled form fields with inline error messages,
+`aria-label` on icon-only buttons, and scroll animations plus the marquee
+disabled under `prefers-reduced-motion`.

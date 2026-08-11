@@ -1,30 +1,26 @@
-import "./App.css";
-import "bootstrap/dist/css/bootstrap.min.css";
-import Home from "./components/HomePage/Home";
+import React from "react";
+import { BrowserRouter, Route, Routes } from "react-router-dom";
+import Layout from "./components/layout/Layout";
+import Home from "./Pages/Home/Home";
 import About from "./Pages/About/About";
-import FoodCard from "./Pages/Services/Service";
+import Services from "./Pages/Services/Services";
+import Gallery from "./Pages/Gallery/Gallery";
+import Contact from "./Pages/Contact/Contact";
+import NotFound from "./Pages/NotFound/NotFound";
 
-// function App() {
-//   return (
-//   );
-// }
+const App = () => (
+  <BrowserRouter>
+    <Routes>
+      <Route element={<Layout />}>
+        <Route index element={<Home />} />
+        <Route path="about" element={<About />} />
+        <Route path="services" element={<Services />} />
+        <Route path="gallery" element={<Gallery />} />
+        <Route path="contact" element={<Contact />} />
+        <Route path="*" element={<NotFound />} />
+      </Route>
+    </Routes>
+  </BrowserRouter>
+);
 
-// export default App;
-
-function App() {
-  return (
-    <div
-    
-      style={{ display: "flex", justifyContent: "center", flexWrap: "wrap" }}
-    >
-      <FoodCard name="Pizza" price="399" image="/assets/logo.png" />
-      <FoodCard name="Burger" price="199" image="/assets/sale-badge.png" />
-      <FoodCard name="Pasta" price="299" image="/assets/pricing-bg.jpg" />
-      <div className="App">
-        <Home />
-        <About />
-      </div>
-    </div>
-  );
-}
 export default App;
